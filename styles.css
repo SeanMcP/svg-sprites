@@ -4,3 +4,26 @@ svg {
   width: 160px;
   fill: orange;
 }
+
+form label span {
+  border: 1px solid black;
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+}
+
+form label:focus-within span {
+  outline: 2px solid dodgerblue;
+  outline-offset: 2px;
+}
+
+.visually-hidden,
+form label input {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

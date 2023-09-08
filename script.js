@@ -1,5 +1,5 @@
 const svg = document.querySelector("svg");
-let activeColor = "#000000";
+let activeColor = "#181425";
 let isMouseDown = false;
 const count = 16 * 16;
 
@@ -35,10 +35,17 @@ svg.addEventListener("mousemove", (e) => {
   console.log(document.elementsFromPoint(e.clientX, e.clientY));
 });
 
-const colorPicker = document.querySelector("#color-picker");
-colorPicker.addEventListener("change", (e) => {
-  activeColor = e.target.value;
-});
+// const colorPicker = document.querySelector("#color-picker");
+// colorPicker.addEventListener("change", (e) => {
+//   activeColor = e.target.value;
+// });
+
+const form = document.querySelector("form");
+form.addEventListener("change", e => {
+  if (e.target.type === "radio") {
+    activeColor = e.target.value;
+  }
+})
 
 document.addEventListener("mousedown", (e) => {
   isMouseDown = true;
