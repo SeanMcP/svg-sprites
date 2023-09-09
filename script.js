@@ -66,9 +66,11 @@ document.addEventListener("mouseup", () => {
   isMouseDown = false;
 });
 
-const deleteTool = document.querySelector("[data-tool=delete]");
-deleteTool.addEventListener("click", () => {
-  activeColor = "transparent";
+const clearTool = document.querySelector("[data-tool=clear]");
+clearTool.addEventListener("click", () => {
+  svg.querySelectorAll("rect").forEach((rect) => {
+    rect.setAttribute("fill", "transparent");
+  });
 });
 
 document.addEventListener("keyup", (e) => {
@@ -114,12 +116,14 @@ const palette = [
   "#c28569",
 ];
 
-palette.push("transparent")
+palette.push("transparent");
 
 let formInnerHTML = "";
 palette.forEach((color, i) => {
   formInnerHTML += `
-    <input id="${color}" type="radio" name="color" value="${color}" ${i==0 ? "checked" : ""}/>
+    <input id="${color}" type="radio" name="color" value="${color}" ${
+    i == 0 ? "checked" : ""
+  }/>
     <label aria-label="${color}" for="${color}" style="background-color: ${color}"></label>
   `;
 });
