@@ -2,6 +2,9 @@ const svg = document.querySelector("svg");
 let activeColor = "#181425";
 let isMouseDown = false;
 const count = 16 * 16;
+const outputTextarea = document.querySelector("textarea");
+
+const svgHistory = [];
 
 function createSVGElement(name) {
   // The NS (namespace) is important for SVGs
@@ -23,11 +26,19 @@ function createFrame(frameData) {
   svg.appendChild(g);
 }
 
-createFrame();
+const lastFromLocalStorage = localStorage.getItem("last");
+if (lastFromLocalStorage) {
+  svg.innerHTML = lastFromLocalStorage;
+} else {
+  createFrame();
+}
 
 svg.addEventListener("mousedown", (e) => {
   if (!svg.contains(e.target) || e.target.tagName !== "rect") return;
+  svgHistory.push(svg.innerHTML);
   e.target.setAttribute("fill", activeColor);
+  outputTextarea.value = svg.outerHTML;
+  localStorage.setItem("last", svg.outerHTML);
 });
 
 svg.addEventListener("mousemove", (e) => {
@@ -41,11 +52,11 @@ svg.addEventListener("mousemove", (e) => {
 // });
 
 const form = document.querySelector("form");
-form.addEventListener("change", e => {
+form.addEventListener("change", (e) => {
   if (e.target.type === "radio") {
     activeColor = e.target.value;
   }
-})
+});
 
 document.addEventListener("mousedown", (e) => {
   isMouseDown = true;
@@ -54,3 +65,60 @@ document.addEventListener("mousedown", (e) => {
 document.addEventListener("mouseup", () => {
   isMouseDown = false;
 });
+
+const deleteTool = document.querySelector("[data-tool=delete]");
+deleteTool.addEventListener("click", () => {
+  activeColor = "transparent";
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.key === "z" && (e.ctrlKey || e.metaKey)) {
+    const last = svgHistory.pop();
+    if (last) svg.innerHTML = last;
+  }
+});
+
+// https://lospec.com/palette-list/endesga-32
+const palette = [
+  "#be4a2f",
+  "#d77643",
+  "#ead4aa",
+  "#e4a672",
+  "#b86f50",
+  "#733e39",
+  "#3e2731",
+  "#a22633",
+  "#e43b44",
+  "#f77622",
+  "#feae34",
+  "#fee761",
+  "#63c74d",
+  "#3e8948",
+  "#265c42",
+  "#193c3e",
+  "#124e89",
+  "#0099db",
+  "#2ce8f5",
+  "#ffffff",
+  "#c0cbdc",
+  "#8b9bb4",
+  "#5a6988",
+  "#3a4466",
+  "#262b44",
+  "#181425",
+  "#ff0044",
+  "#68386c",
+  "#b55088",
+  "#f6757a",
+  "#e8b796",
+  "#c28569",
+];
+
+let formInnerHTML = "";
+palette.forEach((color, i) => {
+  formInnerHTML += `
+    <input id="${color}" type="radio" name="color" value="${color}" ${i==0 ? "checked" : ""}/>
+    <label aria-label="${color}" for="${color}" style="background-color: ${color}"></label>
+  `;
+});
+form.innerHTML = formInnerHTML;

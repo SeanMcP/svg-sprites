@@ -1,24 +1,50 @@
 svg {
-  border: 1px solid red;
-  height: 160px;
-  width: 160px;
-  fill: orange;
+  height: 100%;
+  width: 100%;
 }
 
-form label span {
+#svg-wrapper {
+  border: 1px solid red;
+  box-sizing: border-box;
+  height: 160px;
+  position: relative;
+  width: 160px;
+}
+
+#svg-wrapper::before, #svg-wrapper::after {
+  background: aqua;
+  box-sizing: border-box;
+  content: "";
+  display: block;
+  position: absolute;
+}
+
+#svg-wrapper::before {
+  width: 1px;
+  height: 100%;
+  transform: translateX(79px);
+}
+
+#svg-wrapper::after {
+  height: 1px;
+  width: 100%;
+  transform: translateY(-83px);
+}
+
+form label {
   border: 1px solid black;
   display: inline-block;
   height: 16px;
   width: 16px;
 }
 
-form label:focus-within span {
+form input:checked + label {
   outline: 2px solid dodgerblue;
   outline-offset: 2px;
 }
 
 .visually-hidden,
-form label input {
+form input[type="radio"] {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
