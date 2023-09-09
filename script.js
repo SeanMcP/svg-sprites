@@ -38,7 +38,7 @@ svg.addEventListener("mousedown", (e) => {
   svgHistory.push(svg.innerHTML);
   e.target.setAttribute("fill", activeColor);
   outputTextarea.value = svg.outerHTML;
-  localStorage.setItem("last", svg.outerHTML);
+  localStorage.setItem("last", svg.innerHTML);
 });
 
 svg.addEventListener("mousemove", (e) => {
