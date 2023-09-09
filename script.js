@@ -2,7 +2,8 @@ const svg = document.querySelector("svg");
 let activeColor = "#181425";
 let isMouseDown = false;
 const count = 16 * 16;
-const outputTextarea = document.querySelector("textarea");
+const exportTextarea = document.querySelector("#export");
+const importTextarea = document.querySelector("#import");
 
 const svgHistory = [];
 
@@ -29,6 +30,7 @@ function createFrame(frameData) {
 const lastFromLocalStorage = localStorage.getItem("last");
 if (lastFromLocalStorage) {
   svg.innerHTML = lastFromLocalStorage;
+  exportTextarea.value = svg.outerHTML;
 } else {
   createFrame();
 }
@@ -37,7 +39,7 @@ svg.addEventListener("mousedown", (e) => {
   if (!svg.contains(e.target) || e.target.tagName !== "rect") return;
   svgHistory.push(svg.innerHTML);
   e.target.setAttribute("fill", activeColor);
-  outputTextarea.value = svg.outerHTML;
+  exportTextarea.value = svg.outerHTML;
   localStorage.setItem("last", svg.innerHTML);
 });
 
@@ -129,3 +131,7 @@ palette.forEach((color, i) => {
 });
 
 form.innerHTML = formInnerHTML;
+
+importTextarea.addEventListener("input", (e) => {
+  svg.outerHTML = e.target.value;
+});

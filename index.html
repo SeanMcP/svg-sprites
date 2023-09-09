@@ -9,16 +9,29 @@
   <body>
     <main>
       <div id="svg-wrapper">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="transparent"></svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="transparent"
+        ></svg>
       </div>
       <input type="color" id="color-picker" />
       <form></form>
       <button data-tool="clear">Clear canvas</button>
     </main>
     <aside>
-      <details open>
-        <summary>Export</summary>
-        <textarea id="markup" cols="30" rows="10"></textarea>
+      <details>
+        <summary>Import/Export</summary>
+        <div>
+          <label>
+            <b>Import</b>
+            <textarea id="import" cols="30" rows="5"></textarea>
+          </label>
+          <label>
+            <b>Export</b>
+            <textarea id="export" cols="30" rows="5"></textarea>
+          </label>
+        </div>
       </details>
     </aside>
   </body>
