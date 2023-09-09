@@ -53,3 +53,8 @@ form input[type="radio"] {
   white-space: nowrap;
   width: 1px;
 }
+
+label[aria-label=transparent] {
+  background-image: url(./transparent.svg);
+  background-size: cover;
+}

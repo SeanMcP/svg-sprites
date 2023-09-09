@@ -114,6 +114,8 @@ const palette = [
   "#c28569",
 ];
 
+palette.push("transparent")
+
 let formInnerHTML = "";
 palette.forEach((color, i) => {
   formInnerHTML += `
@@ -121,4 +123,5 @@ palette.forEach((color, i) => {
     <label aria-label="${color}" for="${color}" style="background-color: ${color}"></label>
   `;
 });
+
 form.innerHTML = formInnerHTML;
