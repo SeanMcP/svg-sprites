@@ -1,4 +1,4 @@
-let svg = document.querySelector("svg");
+const svg = document.querySelector("svg");
 let activeColor = "#181425";
 let isMouseDown = false;
 const count = 16 * 16;
@@ -39,25 +39,18 @@ if (lastFromLocalStorage) {
   createFrame();
 }
 
-// I added this when import was broken. Don't feel committed to this pattern.
-function addSVGEventListeners() {
-  svg = document.querySelector("svg");
-  svg.addEventListener("mousedown", (e) => {
-    console.log("mousedown", e.target)
-    if (!svg.contains(e.target) || e.target.tagName !== "use") return;
-    svgHistory.push(svg.innerHTML);
-    e.target.setAttribute("fill", activeColor);
-    exportTextarea.value = getExport();
-    localStorage.setItem("last", svg.innerHTML);
-  });
-  
-  svg.addEventListener("mousemove", (e) => {
-    // console.log(":hover", document.querySelector(":hover"));
-    // console.log(document.elementsFromPoint(e.clientX, e.clientY));
-  });
-}
+svg.addEventListener("mousedown", (e) => {
+  if (!svg.contains(e.target) || e.target.tagName !== "use") return;
+  svgHistory.push(svg.innerHTML);
+  e.target.setAttribute("fill", activeColor);
+  exportTextarea.value = getExport();
+  localStorage.setItem("last", svg.innerHTML);
+});
 
-addSVGEventListeners();
+svg.addEventListener("mousemove", (e) => {
+  // console.log(":hover", document.querySelector(":hover"));
+  // console.log(document.elementsFromPoint(e.clientX, e.clientY));
+});
 
 // const colorPicker = document.querySelector("#color-picker");
 // colorPicker.addEventListener("change", (e) => {
@@ -146,20 +139,47 @@ palette.forEach((color, i) => {
   `;
 });
 
+activeColor = palette[0];
+
 form.innerHTML = formInnerHTML;
 
 importTextarea.addEventListener("input", (e) => {
-  svg.outerHTML = e.target.value;
-  addSVGEventListeners();
+  const string = e.target.value;
+  const lines = string.split(`<use href="#p"`).slice(1);
+
+  const map = new Map();
+
+  lines.forEach((line) => {
+    const x = line.match(/x="(\d+)"/)?.[1] ?? "0";
+    const y = line.match(/y="(\d+)"/)?.[1] ?? "0";
+    const fill = line.match(/fill="(#\w+)"/)?.[1] ?? "UH OH!";
+    map.set(`${x},${y}`, fill);
+  });
+
+  svg.querySelectorAll("use").forEach((use) => {
+    const x = use.getAttribute("x") ?? "0";
+    const y = use.getAttribute("y") ?? "0";
+    const key = `${x},${y}`;
+    use.setAttribute("fill", map.has(key) ? map.get(key) : "transparent");
+  });
+
+  localStorage.setItem("last", svg.innerHTML);
+
+  alert("Imported!");
+
+  e.target.value = "";
 });
 
 function getExport() {
-  let outerHTML = svg.outerHTML;
+  let output = svg.outerHTML;
   // Remove "pixels" without fill
-  outerHTML = outerHTML.replace(/<use href="#p"(?:\ x="\d+")?(?:\ y="\d+")?><\/use>/g, "")
+  output = output.replace(
+    /<use href="#p"(?:\ x="\d+")?(?:\ y="\d+")?><\/use>/g,
+    ""
+  );
   // Self-close rect/use tags
-  outerHTML = outerHTML.replace(/><\/(rect|use)>/g, "/>")
+  output = output.replace(/><\/(rect|use)>/g, "/>");
   // Remove extra whitespace
-  outerHTML = outerHTML.replace(/>\s+</g, "><")
-  return outerHTML;
+  output = output.replace(/>\s+</g, "><");
+  return output;
 }
