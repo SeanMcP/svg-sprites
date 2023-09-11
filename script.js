@@ -124,6 +124,7 @@ const palette = [
 ];
 
 palette.push("transparent");
+palette.push("#00000080");
 
 let formInnerHTML = "";
 palette.forEach((color, i) => {
@@ -145,8 +146,8 @@ function getExport() {
   let outerHTML = svg.outerHTML;
   // Remove "pixels" without fill
   outerHTML = outerHTML.replace(/<use href="#p"(?:\ x="\d+")?(?:\ y="\d+")?><\/use>/g, "")
-  // Self-close tags
-  outerHTML = outerHTML.replace(/><\/\w+>/g, "/>")
+  // Self-close rect/use tags
+  outerHTML = outerHTML.replace(/><\/(rect|use)>/g, "/>")
   // Remove extra whitespace
   outerHTML = outerHTML.replace(/>\s+</g, "><")
   return outerHTML;
