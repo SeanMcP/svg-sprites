@@ -36,3 +36,12 @@ x = 4
 So when there are more than 4 colored rects, then it makes sense to use `defs`.
 
 That feels like too few to warrant checking before generating the export: we can reasonably use `defs` for all cases.
+
+## CSS variables for `fill`
+
+I had the idea to use CSS variables to replace repetitive fill hexcodes, but I think the idea is a non-starter:
+
+- `fill="#000000"` is 14 characters long
+- `fill="var(--a)"` is 15 characters long, let alone the `style` declaration required
+
+So I'm going to drop the idea for now.
