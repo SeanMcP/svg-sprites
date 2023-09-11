@@ -14,7 +14,15 @@
         </svg>
       </div>
       <input type="color" id="color-picker" />
-      <form></form>
+      <form id="toolbar">
+        <fieldset>
+          <legend>Mode</legend>
+          <input type="radio" name="mode" id="draw" value="draw" checked />
+          <label aria-label="draw" for="draw"></label>
+          <input type="radio" name="mode" id="fill" value="fill" />
+          <label aria-label="fill" for="fill"></label>
+        </fieldset>
+      </form>
       <button data-tool="clear">Clear canvas</button>
     </main>
     <aside>
@@ -23,7 +31,12 @@
         <div>
           <label>
             <b>Import</b>
-            <textarea id="import" cols="30" placeholder="Paste SVG markup here" rows="1"></textarea>
+            <textarea
+              id="import"
+              cols="30"
+              placeholder="Paste SVG markup here"
+              rows="1"
+            ></textarea>
           </label>
           <label>
             <b>Export</b>

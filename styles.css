@@ -59,6 +59,18 @@ form input[type="radio"] {
   width: 1px;
 }
 
+label[for="draw"] {
+  background-image: url(images/draw.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+label[for="fill"] {
+  background-image: url(images/fill.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 label[aria-label=transparent] {
   background-image: url(./transparent.svg);
   background-size: cover;
