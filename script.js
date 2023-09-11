@@ -1,4 +1,4 @@
-const svg = document.querySelector("svg");
+let svg = document.querySelector("svg");
 let activeColor = "#181425";
 let isMouseDown = false;
 const count = 16 * 16;
@@ -39,18 +39,25 @@ if (lastFromLocalStorage) {
   createFrame();
 }
 
-svg.addEventListener("mousedown", (e) => {
-  if (!svg.contains(e.target) || e.target.tagName !== "use") return;
-  svgHistory.push(svg.innerHTML);
-  e.target.setAttribute("fill", activeColor);
-  exportTextarea.value = getExport();
-  localStorage.setItem("last", svg.innerHTML);
-});
+// I added this when import was broken. Don't feel committed to this pattern.
+function addSVGEventListeners() {
+  svg = document.querySelector("svg");
+  svg.addEventListener("mousedown", (e) => {
+    console.log("mousedown", e.target)
+    if (!svg.contains(e.target) || e.target.tagName !== "use") return;
+    svgHistory.push(svg.innerHTML);
+    e.target.setAttribute("fill", activeColor);
+    exportTextarea.value = getExport();
+    localStorage.setItem("last", svg.innerHTML);
+  });
+  
+  svg.addEventListener("mousemove", (e) => {
+    // console.log(":hover", document.querySelector(":hover"));
+    // console.log(document.elementsFromPoint(e.clientX, e.clientY));
+  });
+}
 
-svg.addEventListener("mousemove", (e) => {
-  // console.log(":hover", document.querySelector(":hover"));
-  // console.log(document.elementsFromPoint(e.clientX, e.clientY));
-});
+addSVGEventListeners();
 
 // const colorPicker = document.querySelector("#color-picker");
 // colorPicker.addEventListener("change", (e) => {
@@ -126,6 +133,8 @@ const palette = [
 palette.push("transparent");
 palette.push("#00000080"); // 50% opaque black
 palette.push("#00000040"); // 25% opaque black
+palette.push("#ffffff80"); // 50% opaque white
+palette.push("#ffffff40"); // 25% opaque white
 
 let formInnerHTML = "";
 palette.forEach((color, i) => {
@@ -141,6 +150,7 @@ form.innerHTML = formInnerHTML;
 
 importTextarea.addEventListener("input", (e) => {
   svg.outerHTML = e.target.value;
+  addSVGEventListeners();
 });
 
 function getExport() {

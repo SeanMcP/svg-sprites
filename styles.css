@@ -1,4 +1,6 @@
 svg {
+  background-image: url(no-background.svg);
+  background-size: 25%;
   fill: transparent;
   height: 100%;
   width: 100%;
@@ -61,13 +63,13 @@ label[aria-label=transparent] {
   background-repeat: no-repeat;
 }
 
-label[aria-label="#00000080"] {
+label:is([aria-label="#00000080"], [aria-label="#ffffff80"]) {
   background-image: url(./fifty.svg);
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-label[aria-label="#00000040"] {
+label:is([aria-label="#00000040"], [aria-label="#ffffff40"]) {
   background-image: url(./twenty-five.svg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -77,3 +79,19 @@ details label > * {
   display: block;
   margin-block-end: 0.5rem;
 }
+
+/* Start UI */
+
+body {
+  background-color: #262b44;
+}
+
+form {
+  background-color: #3a4466;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+}
+
+/* End UI */
