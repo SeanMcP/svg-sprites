@@ -140,5 +140,7 @@ function getExport() {
   let outerHTML = svg.outerHTML;
   // Remove rect[fill="transparent"]
   outerHTML = outerHTML.replace(/<rect\ height="1" width="1" x="\d+" y="\d+"><\/rect>/g, "")
+  // Self-close rects
+  outerHTML = outerHTML.replace(/><\/rect>/g, "/>")
   return outerHTML;
 }
