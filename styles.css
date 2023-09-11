@@ -7,11 +7,13 @@ svg {
 }
 
 #svg-wrapper {
+  --size: calc(16px * 40);
+  --half: calc(var(--size) / 2);
   border: 1px solid red;
   box-sizing: border-box;
-  height: 160px;
+  height: var(--size);
   position: relative;
-  width: 160px;
+  width: var(--size);
 }
 
 #svg-wrapper::before, #svg-wrapper::after {
@@ -25,20 +27,20 @@ svg {
 #svg-wrapper::before {
   width: 1px;
   height: 100%;
-  transform: translateX(79px);
+  transform: translateX(calc(var(--half) - 2px));
 }
 
 #svg-wrapper::after {
   height: 1px;
   width: 100%;
-  transform: translateY(-83px);
+  transform: translateY(calc(-1 * var(--half) - 3px));
 }
 
 form label {
   border: 1px solid black;
   display: inline-block;
-  height: 16px;
-  width: 16px;
+  height: 24px;
+  width: 24px;
 }
 
 form input:checked + label {
@@ -84,6 +86,12 @@ details label > * {
 
 body {
   background-color: #262b44;
+  color: #c0cbdc;
+  font-family: system-ui;
+}
+
+:is(button,input,textarea) {
+  font: inherit;
 }
 
 form {
@@ -92,6 +100,10 @@ form {
   flex-wrap: wrap;
   gap: 4px;
   padding: 4px;
+}
+
+textarea {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 }
 
 /* End UI */
