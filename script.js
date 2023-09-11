@@ -40,6 +40,7 @@ if (lastFromLocalStorage) {
 }
 
 svg.addEventListener("mousedown", (e) => {
+  isMouseDown = true;
   if (!svg.contains(e.target) || e.target.tagName !== "use") return;
   svgHistory.push(svg.innerHTML);
   e.target.setAttribute("fill", activeColor);
@@ -48,8 +49,19 @@ svg.addEventListener("mousedown", (e) => {
 });
 
 svg.addEventListener("mousemove", (e) => {
-  // console.log(":hover", document.querySelector(":hover"));
-  // console.log(document.elementsFromPoint(e.clientX, e.clientY));
+  if (!isMouseDown) return;
+  const elementsFromPoint = document.elementsFromPoint(e.clientX, e.clientY);
+  elementsFromPoint.forEach((element) => {
+    if (element.tagName === "use") {
+      element.setAttribute("fill", activeColor);
+      // Consider debouncing this
+      localStorage.setItem("last", svg.innerHTML);
+    }
+  });
+});
+
+svg.addEventListener("mouseup", () => {
+  isMouseDown = false;
 });
 
 // const colorPicker = document.querySelector("#color-picker");
