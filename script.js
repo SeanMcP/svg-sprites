@@ -30,7 +30,7 @@ function createFrame(frameData) {
 const lastFromLocalStorage = localStorage.getItem("last");
 if (lastFromLocalStorage) {
   svg.innerHTML = lastFromLocalStorage;
-  exportTextarea.value = svg.outerHTML;
+  exportTextarea.value = getExport();
 } else {
   createFrame();
 }
@@ -39,7 +39,7 @@ svg.addEventListener("mousedown", (e) => {
   if (!svg.contains(e.target) || e.target.tagName !== "rect") return;
   svgHistory.push(svg.innerHTML);
   e.target.setAttribute("fill", activeColor);
-  exportTextarea.value = svg.outerHTML;
+  exportTextarea.value = getExport();
   localStorage.setItem("last", svg.innerHTML);
 });
 
@@ -135,3 +135,10 @@ form.innerHTML = formInnerHTML;
 importTextarea.addEventListener("input", (e) => {
   svg.outerHTML = e.target.value;
 });
+
+function getExport() {
+  let outerHTML = svg.outerHTML;
+  // Remove rect[fill="transparent"]
+  outerHTML = outerHTML.replace(/<rect\ height="1" width="1" x="\d+" y="\d+"><\/rect>/g, "")
+  return outerHTML;
+}
