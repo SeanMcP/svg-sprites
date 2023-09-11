@@ -124,7 +124,8 @@ const palette = [
 ];
 
 palette.push("transparent");
-palette.push("#00000080");
+palette.push("#00000080"); // 50% opaque black
+palette.push("#00000040"); // 25% opaque black
 
 let formInnerHTML = "";
 palette.forEach((color, i) => {
