@@ -16,12 +16,16 @@ function createFrame(frameData) {
   const g = createSVGElement("g");
 
   for (let i = 0; i < count; i++) {
-    const rect = createSVGElement("rect");
-    rect.setAttribute("height", "1");
-    rect.setAttribute("width", "1");
-    rect.setAttribute("x", i % 16);
-    rect.setAttribute("y", Math.floor(i / 16));
-    g.appendChild(rect);
+    const use = createSVGElement("use");
+    use.setAttribute("href", "#p");
+
+    const x = i % 16;
+    if (x > 0) use.setAttribute("x", x);
+
+    const y = Math.floor(i / 16);
+    if (y > 0) use.setAttribute("y", y);
+
+    g.appendChild(use);
   }
 
   svg.appendChild(g);
@@ -36,7 +40,7 @@ if (lastFromLocalStorage) {
 }
 
 svg.addEventListener("mousedown", (e) => {
-  if (!svg.contains(e.target) || e.target.tagName !== "rect") return;
+  if (!svg.contains(e.target) || e.target.tagName !== "use") return;
   svgHistory.push(svg.innerHTML);
   e.target.setAttribute("fill", activeColor);
   exportTextarea.value = getExport();
@@ -45,7 +49,7 @@ svg.addEventListener("mousedown", (e) => {
 
 svg.addEventListener("mousemove", (e) => {
   // console.log(":hover", document.querySelector(":hover"));
-  console.log(document.elementsFromPoint(e.clientX, e.clientY));
+  // console.log(document.elementsFromPoint(e.clientX, e.clientY));
 });
 
 // const colorPicker = document.querySelector("#color-picker");
@@ -70,9 +74,10 @@ document.addEventListener("mouseup", () => {
 
 const clearTool = document.querySelector("[data-tool=clear]");
 clearTool.addEventListener("click", () => {
-  svg.querySelectorAll("rect").forEach((rect) => {
-    rect.setAttribute("fill", "transparent");
+  svg.querySelectorAll("use").forEach((use) => {
+    use.setAttribute("fill", "transparent");
   });
+  localStorage.removeItem("last");
 });
 
 document.addEventListener("keyup", (e) => {
@@ -138,9 +143,11 @@ importTextarea.addEventListener("input", (e) => {
 
 function getExport() {
   let outerHTML = svg.outerHTML;
-  // Remove rect[fill="transparent"]
-  outerHTML = outerHTML.replace(/<rect\ height="1" width="1" x="\d+" y="\d+"><\/rect>/g, "")
-  // Self-close rects
-  outerHTML = outerHTML.replace(/><\/rect>/g, "/>")
+  // Remove "pixels" without fill
+  outerHTML = outerHTML.replace(/<use href="#p"(?:\ x="\d+")?(?:\ y="\d+")?><\/use>/g, "")
+  // Self-close tags
+  outerHTML = outerHTML.replace(/><\/\w+>/g, "/>")
+  // Remove extra whitespace
+  outerHTML = outerHTML.replace(/>\s+</g, "><")
   return outerHTML;
 }
