@@ -245,7 +245,7 @@ function getExport() {
   // TODO: Combine with above
   // Remove "pixels" with transparent fill
   output = output.replace(
-    /<use href="#p"(?:\ x="\d+")?(?:\ y="\d+")? fill="transparent"\/>/g,
+    /<use href="#p"(?:\ x="\d+")?(?:\ y="\d+")? fill="transparent"><\/use>/g,
     ""
   );
   // Self-close rect/use tags
