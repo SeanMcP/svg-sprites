@@ -242,6 +242,12 @@ function getExport() {
     /<use href="#p"(?:\ x="\d+")?(?:\ y="\d+")?><\/use>/g,
     ""
   );
+  // TODO: Combine with above
+  // Remove "pixels" with transparent fill
+  output = output.replace(
+    /<use href="#p"(?:\ x="\d+")?(?:\ y="\d+")? fill="transparent"\/>/g,
+    ""
+  );
   // Self-close rect/use tags
   output = output.replace(/><\/(rect|use)>/g, "/>");
   // Remove extra whitespace
